@@ -1,0 +1,2 @@
+depend:FSM_interfaces
+LDFLAGS:-ldl
