@@ -1,6 +1,7 @@
 #include "framework_controler.h"
 #include "framework_base.h"
 #include "algorithm_basic.h"
+#include "algorithm_deep_first.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -25,6 +26,7 @@ framework_base::framework_base
 
 	// Registering algorithms
 	algorithm_basic::registerAlgorithm(getAlgorithmFactory());
+	algorithm_deep_first::registerAlgorithm(getAlgorithmFactory());
 }
 
 //---------------------------------------------------------------------------
