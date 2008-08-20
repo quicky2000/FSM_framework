@@ -61,6 +61,7 @@ framework_algorithm_if* createAlgorithmBasic(void)
   return new algorithm_basic();
 }
 
+#ifdef EXTERNAL_ALGORITHM
 //-----------------------------------------------------------------------------
 extern "C"
 {
@@ -69,9 +70,5 @@ extern "C"
     registerFrameworkAlgorithm("algorithm_basic",createAlgorithmBasic,p_factory);
   }
 }
+#endif
 
-//-----------------------------------------------------------------------------
-void registerFrameworkAlgorithm(string p_algorithm_name,FSM_framework_algorithm_creator p_creator,map<string,FSM_framework_algorithm_creator> &p_factory)
-{
-  p_factory.insert(map<string,FSM_framework_algorithm_creator>::value_type(p_algorithm_name,p_creator));
-}

@@ -14,6 +14,5 @@ class algorithm_basic: public framework_algorithm_if
 };
 
 framework_algorithm_if* createAlgorithmBasic(void);
-void registerFrameworkAlgorithm(string p_algorithm_name,FSM_framework_algorithm_creator p_creator,map<string,FSM_framework_algorithm_creator> &p_factory);
 
 #endif

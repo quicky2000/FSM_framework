@@ -59,3 +59,8 @@ FSM_UI_if* framework_algorithm_if::getFsmUi(void)
 	return m_fsm_ui;
 }
 
+//-----------------------------------------------------------------------------
+void registerFrameworkAlgorithm(string p_algorithm_name,FSM_framework_algorithm_creator p_creator,map<string,FSM_framework_algorithm_creator> &p_factory)
+{
+  p_factory.insert(map<string,FSM_framework_algorithm_creator>::value_type(p_algorithm_name,p_creator));
+}
