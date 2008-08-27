@@ -1,6 +1,8 @@
 #include "framework_algorithm_if.h"
 #include <assert.h>
 
+using namespace std;
+
 //-----------------------------------------------------------------------------
 framework_algorithm_if::framework_algorithm_if(void):
 	m_fsm(NULL),

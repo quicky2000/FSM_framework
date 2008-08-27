@@ -1,16 +1,16 @@
-#ifndef _FRAMEWORK_UI_IF_
-#define _FRAMEWORK_UI_IF_
+#ifndef FRAMEWORK_UI_IF
+#define FRAMEWORK_UI_IF
 
 #include <vector>
-using namespace std;
+#include <string>
 
 class framework_UI_if
 {
-	public:
-		virtual void displayLoadedFsm(vector<string> *p_FSM_list)=0;
-		virtual void displayLoadedFsmUi(vector<string> *p_FSM_UI_list)=0;
-		virtual void displayLoadedAlgorithm(vector<string> *p_algorithm_list)=0;
-		virtual void displayWarningMessage(string p_message)=0;
-		virtual void displayErrorMessage(string p_message)=0;
+ public:
+  virtual void displayLoadedFsm(std::vector<std::string> *p_FSM_list)=0;
+  virtual void displayLoadedFsmUi(std::vector<std::string> *p_FSM_UI_list)=0;
+  virtual void displayLoadedAlgorithm(std::vector<std::string> *p_algorithm_list)=0;
+  virtual void displayWarningMessage(std::string p_message)=0;
+  virtual void displayErrorMessage(std::string p_message)=0;
 };
-#endif
+#endif /* FRAMEWORK_UI_IF */

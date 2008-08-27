@@ -9,14 +9,13 @@ class algorithm_deep_first: public framework_algorithm_if
  public:
   // Methods inherited from interface
   void run(void);
-  string getString(void);
+  std::string getString(void);
   
-  static void registerAlgorithm(map<string,FSM_framework_algorithm_creator > &p_factory);
+  static void registerAlgorithm(std::map<std::string,FSM_framework_algorithm_creator > &p_factory);
  private:
-  map<string,situation_tree_node> m_situation_tree;
+  std::map<std::string,situation_tree_node> m_situation_tree;
 };
 
 framework_algorithm_if* createAlgorithmDeepFirst(void);
-//TO DELETEvoid registerFrameworkAlgorithm(string p_algorithm_name,FSM_framework_algorithm_creator p_creator,map<string,FSM_framework_algorithm_creator> &p_factory);
 
-#endif
+#endif /*ALGORITHM_DEEP_FIRST */
