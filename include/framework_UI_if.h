@@ -12,5 +12,7 @@ class framework_UI_if
   virtual void displayLoadedAlgorithm(std::vector<std::string> *p_algorithm_list)=0;
   virtual void displayWarningMessage(std::string p_message)=0;
   virtual void displayErrorMessage(std::string p_message)=0;
+
+  virtual ~framework_UI_if(void);
 };
 #endif /* FRAMEWORK_UI_IF */

@@ -8,6 +8,8 @@ class framework_algorithm_UI_if
 {
  public:
   virtual std::string getType(void)=0;
+
+virtual ~framework_algorithm_UI_if(void);
 };
 
 typedef framework_algorithm_UI_if *(*FSM_framework_algorithm_UI_creator)(void);
