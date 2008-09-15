@@ -146,8 +146,4 @@ extern "C"
 }
 #endif
 
-//-----------------------------------------------------------------------------
-//TO DELETEvoid registerFrameworkAlgorithm(string p_algorithm_name,FSM_framework_algorithm_creator p_creator,map<string,FSM_framework_algorithm_creator> &p_factory)
-//TO DELETE{
-//TO DELETE  p_factory.insert(map<string,FSM_framework_algorithm_creator>::value_type(p_algorithm_name,p_creator));
-//TO DELETE}
+//EOF

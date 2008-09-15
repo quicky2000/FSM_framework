@@ -38,7 +38,7 @@ class situation_tree_node
 
   /**
      Method to indicate that a transition is explored
-     @param p_transition index of transition to mark explroed
+     @param p_transition index of transition to mark explored
   */
   void setTransitionExplored(unsigned int p_transition_id);
 
