@@ -101,8 +101,16 @@ void algorithm_deep_first_weighted::run(void)
 	      getFsm()->selectTransition(l_previous_transition);
 
 	      // Indicate that transition is explored
-	      l_situation_tree_node.setTransitionExplored(l_previous_transition);
-	      l_weighted_transitions.erase(l_weighted_transitions.begin());
+	      if((*l_weighted_transitions.begin())->getWeight())
+		{
+		  l_situation_tree_node.setTransitionExplored(l_previous_transition);
+		  l_weighted_transitions.erase(l_weighted_transitions.begin());
+		}
+	      else
+		{
+		  l_situation_tree_node.setAllTransitionExplored();
+		  l_weighted_transitions.clear();
+		}
 	    }
 	  // No more transition available so we go back for one step if possible
 	  else

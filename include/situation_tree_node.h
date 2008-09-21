@@ -43,6 +43,11 @@ class situation_tree_node
   void setTransitionExplored(unsigned int p_transition_id);
 
   /**
+     Method to indicate that all transition are explored
+  */
+  void setAllTransitionExplored(void);
+
+  /**
      Method to get the list of predecessors
   */
   const std::map<unsigned int,std::string> getPredecessorSituations(void)const;

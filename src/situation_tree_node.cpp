@@ -43,10 +43,15 @@ FSM_situation_if* situation_tree_node::getSituation(void)const
 }
 
 //------------------------------------------------------------------------------
+void situation_tree_node::setAllTransitionExplored(void)
+{
+  m_unexplored_transitions.clear();
+}
+
+//------------------------------------------------------------------------------
 void situation_tree_node::setTransitionExplored(unsigned int p_transition_id)
 {
-  size_t l_result = m_unexplored_transitions.erase(p_transition_id);
-  assert(l_result);
+  m_unexplored_transitions.erase(p_transition_id);
 }
 
 //------------------------------------------------------------------------------
