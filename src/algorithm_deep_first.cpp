@@ -67,6 +67,8 @@ void algorithm_deep_first::run(void)
 	    }
 	  cout << endl ;
  
+	  if(!l_current_situation->isFinal())
+	    {
 	  // Check if it can go deeply
 	  if( l_current_situation->isValid() && l_unexplored_transitions.size()>0)
 	    {
@@ -107,6 +109,12 @@ void algorithm_deep_first::run(void)
 		  // We are at the original situation
 		  l_continu = false ;
 		}
+	    }
+	    }
+	  else
+	    {
+	      cout << "Final situation found !!!" << endl ;
+	      l_continu = false;
 	    }
 	} while(l_continu);
       cout << "End of algorithm" << endl ;

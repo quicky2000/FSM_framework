@@ -21,6 +21,8 @@ void algorithm_basic::run(void)
 
 	  l_previous_situation = getFsm()->getCurrentSituation();
 	  getFsmUi()->displaySituation(l_previous_situation) ;
+	  if(!l_previous_situation->isFinal())
+	    {
 	  getFsm()->computeTransitions();
 
 	  FSM_context_if *l_context = l_previous_situation->getCurrentContext();
@@ -35,6 +37,12 @@ void algorithm_basic::run(void)
 	  cin >> l_choosen_transition;
 
 	  getFsm()->selectTransition(l_choosen_transition);
+	    }
+	  else
+	    {
+	      l_continu = false;
+	      cout << "Final situation reached !!!" << endl ;
+	    }
 	} while(l_continu);
     }
   else

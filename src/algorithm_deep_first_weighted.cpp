@@ -88,55 +88,64 @@ void algorithm_deep_first_weighted::run(void)
 	    }
 	  cout << endl ;
  
-	  // Check if it can go deeply
-	  if( l_current_situation->isValid() && l_unexplored_transitions.size()>0)
+	  if(!l_current_situation->isFinal())
 	    {
-	      // Store current situation to record the relationship of future situation
-	      l_previous_transition = (*l_weighted_transitions.begin())->getTransitionIndex();
-	      l_previous_situation = l_current_situation;
 
-	      cout << "Select transition number : " << l_previous_transition << endl ;
-
-	      // Compute the next situation
-	      getFsm()->selectTransition(l_previous_transition);
-
-	      // Indicate that transition is explored
-	      if((*l_weighted_transitions.begin())->getWeight())
+	      // Check if it can go deeply
+	      if( l_current_situation->isValid() && l_unexplored_transitions.size()>0)
 		{
-		  l_situation_tree_node.setTransitionExplored(l_previous_transition);
-		  l_weighted_transitions.erase(l_weighted_transitions.begin());
+		  // Store current situation to record the relationship of future situation
+		  l_previous_transition = (*l_weighted_transitions.begin())->getTransitionIndex();
+		  l_previous_situation = l_current_situation;
+
+		  cout << "Select transition number : " << l_previous_transition << endl ;
+
+		  // Compute the next situation
+		  getFsm()->selectTransition(l_previous_transition);
+
+		  // Indicate that transition is explored
+		  if((*l_weighted_transitions.begin())->getWeight())
+		    {
+		      l_situation_tree_node.setTransitionExplored(l_previous_transition);
+		      l_weighted_transitions.erase(l_weighted_transitions.begin());
+		    }
+		  else
+		    {
+		      l_situation_tree_node.setAllTransitionExplored();
+		      l_weighted_transitions.clear();
+		    }
 		}
+	      // No more transition available so we go back for one step if possible
 	      else
 		{
-		  l_situation_tree_node.setAllTransitionExplored();
-		  l_weighted_transitions.clear();
+	     
+		  const map<unsigned int,string> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
+		  // Check if there is a predecessor
+		  if(l_predecessor_situations.size())
+		    {
+		      l_previous_situation = NULL;
+
+		      // Getting predecessor situation
+		      map<string,situation_tree_node>::const_iterator l_previous_node_iter =  m_situation_tree.find(l_predecessor_situations.begin()->second);
+
+		      // Predecessor situation should be in situation tree !!!!
+		      assert(l_previous_node_iter != m_situation_tree.end());
+
+		      //		  cout << "Restore previous situation " << l_previous_node_iter->second.getSituation() <<  endl ;
+		      // Getting back to previous situation
+		      getFsm()->setCurrentSituation(l_previous_node_iter->second.getSituation());
+		    }
+		  else
+		    {		  
+		      // We are at the original situation
+		      l_continu = false ;
+		    }
 		}
 	    }
-	  // No more transition available so we go back for one step if possible
 	  else
 	    {
-	     
-	      const map<unsigned int,string> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
-	      // Check if there is a predecessor
-	      if(l_predecessor_situations.size())
-		{
-		  l_previous_situation = NULL;
-
-		  // Getting predecessor situation
-		  map<string,situation_tree_node>::const_iterator l_previous_node_iter =  m_situation_tree.find(l_predecessor_situations.begin()->second);
-
-		  // Predecessor situation should be in situation tree !!!!
-		  assert(l_previous_node_iter != m_situation_tree.end());
-
-		  //		  cout << "Restore previous situation " << l_previous_node_iter->second.getSituation() <<  endl ;
-		  // Getting back to previous situation
-		  getFsm()->setCurrentSituation(l_previous_node_iter->second.getSituation());
-		}
-	      else
-		{		  
-		  // We are at the original situation
-		  l_continu = false ;
-		}
+	      cout << "Final situation found !!!" << endl ;
+	      l_continu = false;
 	    }
 	} while(l_continu);
       cout << "End of algorithm" << endl ;
