@@ -9,6 +9,7 @@
 #include "FSM_weighted_transition_index_comparator.h"
 
 #include <iostream>
+#include <algorithm>
 #include <assert.h>
 using namespace std;
 
