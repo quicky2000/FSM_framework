@@ -32,7 +32,8 @@ void algorithm_deep_first_weighted::run(void)
 	  // Check if situation was already encoutered
 	  map<string,situation_tree_node>::iterator l_node_iter = m_situation_tree.find(l_unique_id);
 	  map<string,vector<FSM_weighted_transition_index_if*> >::iterator l_weight_iter = m_situation_weighted_transition_index.find(l_unique_id);
-	  if(l_node_iter == m_situation_tree.end() || l_weight_iter ==  m_situation_weighted_transition_index.end())
+	  FSM_situation_if *l_unique_situation = m_situation_manager.getUniqueSituation(l_current_situation);
+	  if(l_current_situation == l_unique_situation)
 	    {
 	      cout << "Computing transitions" << endl ;
 	      cout << "Current situation : " << l_current_situation << " \"" << l_unique_id << "\"" <<endl ; 
@@ -67,10 +68,9 @@ void algorithm_deep_first_weighted::run(void)
 
 	      cout << "Total of situation = " <<  m_situation_tree.size() << endl;
 	    }
-	  else if(l_current_situation != l_node_iter->second.getSituation())
+	  else
 	    {
-	      delete l_current_situation;
-	      l_current_situation = l_node_iter->second.getSituation();
+	      l_current_situation = l_unique_situation; 
 	      getFsm()->setCurrentSituation(l_current_situation);
 	    }
 	  

@@ -46,16 +46,12 @@ void algorithm_wide_first::run(void)
 		  if(l_new_situation->isValid())
 		    {
 		      string l_new_id = l_new_situation->getUniqueId();
-		      if(m_situation_tree.find(l_new_id) == m_situation_tree.end())
+		      if(l_new_situation == m_situation_manager.getUniqueSituation(l_new_situation))
 			{
 			  getFsm()->computeTransitions();
 			  
 			  m_situation_vector.push_back(l_new_situation);
 			  m_situation_tree.insert( map<string,situation_tree_node>::value_type(l_new_id,situation_tree_node(l_new_situation,l_previous_situation->getUniqueId(),l_transition_index)));
-			}
-		      else
-			{
-			  delete l_new_situation;
 			}
 		    }
 		  getFsm()->setCurrentSituation(l_previous_situation);

@@ -3,6 +3,7 @@
 
 #include "framework_algorithm_if.h"
 #include "situation_tree_node.h"
+#include "situation_manager.h"
 
 #include <vector>
 
@@ -19,6 +20,7 @@ class algorithm_deep_first_weighted: public framework_algorithm_if
  private:
   std::map<std::string,situation_tree_node> m_situation_tree;
   std::map<std::string,std::vector<FSM_weighted_transition_index_if*> > m_situation_weighted_transition_index;
+  situation_manager m_situation_manager;
 };
 
 framework_algorithm_if* createAlgorithmDeepFirstWeighted(void);

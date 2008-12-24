@@ -3,6 +3,7 @@
 
 #include "framework_algorithm_if.h"
 #include "situation_tree_node.h"
+#include "situation_manager.h"
 
 #include <vector>
 
@@ -18,7 +19,7 @@ class algorithm_wide_first: public framework_algorithm_if
  private:
   std::map<std::string,situation_tree_node> m_situation_tree;
   std::vector<FSM_situation_if*> m_situation_vector;
-  
+  situation_manager m_situation_manager;
 };
 
 framework_algorithm_if* createAlgorithmWideFirst(void);
