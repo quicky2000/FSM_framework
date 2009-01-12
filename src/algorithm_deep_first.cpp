@@ -22,16 +22,14 @@ void algorithm_deep_first::run(void)
       do
 	{
 	  FSM_situation_if *l_current_situation = getFsm()->getCurrentSituation();
-	  string l_unique_id = l_current_situation->getUniqueId();
-
 	      
 	  // Check if situation was already encoutered
-	  map<string,situation_tree_node>::iterator l_node_iter = m_situation_tree.find(l_unique_id);
 	  FSM_situation_if *l_unique_situation = m_situation_manager.getUniqueSituation(l_current_situation);
+	  map<const FSM_situation_if *,situation_tree_node>::iterator l_node_iter = m_situation_tree.find(l_unique_situation);
 	  if(l_current_situation == l_unique_situation)
 	    {
 	      cout << "Computing transitions" << endl ;
-	      cout << "Current situation : " << l_current_situation << " \"" << l_unique_id << "\"" <<endl ; 
+	      cout << "Current situation : \"" << l_current_situation->getStringId() << "\"" <<endl ; 
 	      getFsmUi()->displaySituation(l_current_situation) ;
 	      
 	      getFsm()->computeTransitions();
@@ -39,11 +37,11 @@ void algorithm_deep_first::run(void)
 	      // Store current situation with its predecessor relation if it exists
 	      if(l_previous_situation != NULL)
 		{
-		  l_node_iter = m_situation_tree.insert(map<string,situation_tree_node>::value_type(l_unique_id,situation_tree_node(l_current_situation,l_previous_situation->getUniqueId(),l_previous_transition))).first;
+		  l_node_iter = m_situation_tree.insert(map<FSM_situation_if *,situation_tree_node>::value_type(l_unique_situation,situation_tree_node(l_current_situation,l_previous_situation,l_previous_transition))).first;
 		}
 	      else
 		{
-		  l_node_iter = m_situation_tree.insert(map<string,situation_tree_node>::value_type(l_unique_id,situation_tree_node(l_current_situation))).first;
+		  l_node_iter = m_situation_tree.insert(map<FSM_situation_if *,situation_tree_node>::value_type(l_unique_situation,situation_tree_node(l_current_situation))).first;
 		}
 	      cout << "Total of situation = " <<  m_situation_tree.size() << endl;
 	    }
@@ -88,14 +86,15 @@ void algorithm_deep_first::run(void)
 	  else
 	    {
 	     
-	      const map<unsigned int,string> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
+	      const map<unsigned int,FSM_situation_if *> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
 	      // Check if there is a predecessor
 	      if(l_predecessor_situations.size())
 		{
 		  l_previous_situation = NULL;
 
 		  // Getting predecessor situation
-		  map<string,situation_tree_node>::const_iterator l_previous_node_iter =  m_situation_tree.find(l_predecessor_situations.begin()->second);
+		  map<const FSM_situation_if *,situation_tree_node>::const_iterator l_previous_node_iter = 
+ m_situation_tree.find(l_predecessor_situations.begin()->second);
 
 		  // Predecessor situation should be in situation tree !!!!
 		  assert(l_previous_node_iter != m_situation_tree.end());

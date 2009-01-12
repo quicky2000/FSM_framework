@@ -45,13 +45,13 @@ void algorithm_wide_first::run(void)
 		  FSM_situation_if *l_new_situation = getFsm()->getCurrentSituation();
 		  if(l_new_situation->isValid())
 		    {
-		      string l_new_id = l_new_situation->getUniqueId();
 		      if(l_new_situation == m_situation_manager.getUniqueSituation(l_new_situation))
 			{
+			  cout << "STRING ID = \"" << l_new_situation->getStringId() << "\"" << endl ;
 			  getFsm()->computeTransitions();
 			  
 			  m_situation_vector.push_back(l_new_situation);
-			  m_situation_tree.insert( map<string,situation_tree_node>::value_type(l_new_id,situation_tree_node(l_new_situation,l_previous_situation->getUniqueId(),l_transition_index)));
+			  m_situation_tree.insert( map<FSM_situation_if *,situation_tree_node>::value_type(l_new_situation,situation_tree_node(l_new_situation,l_previous_situation,l_transition_index)));
 			}
 		    }
 		  getFsm()->setCurrentSituation(l_previous_situation);

@@ -14,7 +14,7 @@ class algorithm_deep_first: public framework_algorithm_if
   
   static void registerAlgorithm(std::map<std::string,FSM_framework_algorithm_creator > &p_factory);
  private:
-  std::map<std::string,situation_tree_node> m_situation_tree;
+  std::map<const FSM_situation_if*,situation_tree_node> m_situation_tree;
   situation_manager m_situation_manager;
 };
 

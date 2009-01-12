@@ -16,12 +16,12 @@ situation_tree_node::situation_tree_node(
 //------------------------------------------------------------------------------
 situation_tree_node::situation_tree_node(
 					 FSM_situation_if *p_situation,
-					 const string &p_predecessor_id,
+					 FSM_situation_if *p_predecessor_id,
 					 unsigned int p_predecessor_transition):
   m_situation(p_situation)
 {
   initializeUnexploredTransition();
-  m_predecessor_situations.insert( map<unsigned int,string>::value_type(p_predecessor_transition,p_predecessor_id));
+  m_predecessor_situations.insert( map<unsigned int,FSM_situation_if *>::value_type(p_predecessor_transition,p_predecessor_id));
 }
 
 //------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ const set<unsigned int> situation_tree_node::getUnexploredTransitions(void)const
 }
 
 //------------------------------------------------------------------------------
-const map<unsigned int,string> situation_tree_node::getPredecessorSituations(void)const
+const map<unsigned int,FSM_situation_if *> situation_tree_node::getPredecessorSituations(void)const
 {
   return m_predecessor_situations;
 }

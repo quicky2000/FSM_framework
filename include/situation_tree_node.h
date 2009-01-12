@@ -23,7 +23,7 @@ class situation_tree_node
      @param p_predecessor_id : id of predecessor situation
      @param p_predecessor_transtion : index of transition used to come from predecessor
   */
-  situation_tree_node(FSM_situation_if *p_situation,const std::string &p_predecessor_id,unsigned int p_predecessor_transition);
+  situation_tree_node(FSM_situation_if *p_situation,FSM_situation_if* p_predecessor_id,unsigned int p_predecessor_transition);
 
   /**
      Method to access to situation contained in the node
@@ -50,7 +50,7 @@ class situation_tree_node
   /**
      Method to get the list of predecessors
   */
-  const std::map<unsigned int,std::string> getPredecessorSituations(void)const;
+  const std::map<unsigned int,FSM_situation_if*> getPredecessorSituations(void)const;
 
  private:
   /**
@@ -60,8 +60,8 @@ class situation_tree_node
 
   FSM_situation_if *m_situation;
   std::set<unsigned int> m_unexplored_transitions;
-  std::map<unsigned int,std::string> m_successor_situations;
-  std::map<unsigned int,std::string> m_predecessor_situations;
+  std::map<unsigned int,FSM_situation_if*> m_successor_situations;
+  std::map<unsigned int,FSM_situation_if*> m_predecessor_situations;
 
 };
 #endif /* SITUATION_TREE_NODE_H */
