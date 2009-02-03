@@ -14,8 +14,11 @@ FSM_situation_if* situation_manager::getUniqueSituation(FSM_situation_if *p_situ
   set<FSM_situation_if*,pointer_comparator>::const_iterator l_iter = m_set.find(p_situation);
   if(l_iter != m_set.end())
     {
-      l_result = *l_iter;
-      delete p_situation;
+      if(*l_iter != p_situation)
+	{
+	  l_result = *l_iter;
+	  delete p_situation;
+	}
     }
   else
     {
