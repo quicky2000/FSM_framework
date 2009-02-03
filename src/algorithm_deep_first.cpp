@@ -26,7 +26,7 @@ void algorithm_deep_first::run(void)
 	  // Check if situation was already encoutered
 	  FSM_situation_if *l_unique_situation = m_situation_manager.getUniqueSituation(l_current_situation);
 	  map<const FSM_situation_if *,situation_tree_node>::iterator l_node_iter = m_situation_tree.find(l_unique_situation);
-	  if(l_current_situation == l_unique_situation)
+	  if(l_node_iter == m_situation_tree.end())
 	    {
 	      cout << "Computing transitions" << endl ;
 	      cout << "Current situation : \"" << l_current_situation->getStringId() << "\"" <<endl ; 
@@ -45,7 +45,7 @@ void algorithm_deep_first::run(void)
 		}
 	      cout << "Total of situation = " <<  m_situation_tree.size() << endl;
 	    }
-	  else
+	  else if(l_current_situation != l_unique_situation)
 	    {
 	      l_current_situation = l_unique_situation; 
 	      getFsm()->setCurrentSituation(l_unique_situation);
@@ -67,48 +67,48 @@ void algorithm_deep_first::run(void)
  
 	  if(!l_current_situation->isFinal())
 	    {
-	  // Check if it can go deeply
-	  if( l_current_situation->isValid() && l_unexplored_transitions.size()>0)
-	    {
-	      // Store current situation to record the relationship of future situation
-	      l_previous_transition = *(l_unexplored_transitions.begin());
-	      l_previous_situation = l_current_situation;
-
-	      //	      cout << "Select transition number : " << l_previous_transition << endl ;
-
-	      // Compute the next situation
-	      getFsm()->selectTransition(l_previous_transition);
-
-	      // Indicate that transition is explored
-	      l_situation_tree_node.setTransitionExplored(l_previous_transition);
-	    }
-	  // No more transition available so we go back for one step if possible
-	  else
-	    {
-	     
-	      const map<unsigned int,FSM_situation_if *> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
-	      // Check if there is a predecessor
-	      if(l_predecessor_situations.size())
+	      // Check if it can go deeply
+	      if( l_current_situation->isValid() && l_unexplored_transitions.size()>0)
 		{
-		  l_previous_situation = NULL;
+		  // Store current situation to record the relationship of future situation
+		  l_previous_transition = *(l_unexplored_transitions.begin());
+		  l_previous_situation = l_current_situation;
 
-		  // Getting predecessor situation
-		  map<const FSM_situation_if *,situation_tree_node>::const_iterator l_previous_node_iter = 
- m_situation_tree.find(l_predecessor_situations.begin()->second);
+		  //	      cout << "Select transition number : " << l_previous_transition << endl ;
 
-		  // Predecessor situation should be in situation tree !!!!
-		  assert(l_previous_node_iter != m_situation_tree.end());
+		  // Compute the next situation
+		  getFsm()->selectTransition(l_previous_transition);
 
-		  //		  cout << "Restore previous situation " << l_previous_node_iter->second.getSituation() <<  endl ;
-		  // Getting back to previous situation
-		  getFsm()->setCurrentSituation(l_previous_node_iter->second.getSituation());
+		  // Indicate that transition is explored
+		  l_situation_tree_node.setTransitionExplored(l_previous_transition);
 		}
+	      // No more transition available so we go back for one step if possible
 	      else
-		{		  
-		  // We are at the original situation
-		  l_continu = false ;
+		{
+	     
+		  const map<unsigned int,FSM_situation_if *> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
+		  // Check if there is a predecessor
+		  if(l_predecessor_situations.size())
+		    {
+		      l_previous_situation = NULL;
+
+		      // Getting predecessor situation
+		      map<const FSM_situation_if *,situation_tree_node>::const_iterator l_previous_node_iter = 
+			m_situation_tree.find(l_predecessor_situations.begin()->second);
+
+		      // Predecessor situation should be in situation tree !!!!
+		      assert(l_previous_node_iter != m_situation_tree.end());
+
+		      //		  cout << "Restore previous situation " << l_previous_node_iter->second.getSituation() <<  endl ;
+		      // Getting back to previous situation
+		      getFsm()->setCurrentSituation(l_previous_node_iter->second.getSituation());
+		    }
+		  else
+		    {		  
+		      // We are at the original situation
+		      l_continu = false ;
+		    }
 		}
-	    }
 	    }
 	  else
 	    {

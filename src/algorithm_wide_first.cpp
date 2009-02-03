@@ -47,7 +47,6 @@ void algorithm_wide_first::run(void)
 		    {
 		      if(l_new_situation == m_situation_manager.getUniqueSituation(l_new_situation))
 			{
-			  cout << "STRING ID = \"" << l_new_situation->getStringId() << "\"" << endl ;
 			  getFsm()->computeTransitions();
 			  
 			  m_situation_vector.push_back(l_new_situation);
