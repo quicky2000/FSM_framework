@@ -11,6 +11,7 @@ class situation_manager
 {
  public:
   situation_manager(void);
+  ~situation_manager(void);
   FSM_situation_if* getUniqueSituation(FSM_situation_if *p_situation);
  private:
   std::set<FSM_situation_if*,pointer_comparator > m_set;

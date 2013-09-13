@@ -8,6 +8,16 @@ situation_manager::situation_manager(void)
 {
 }
 
+situation_manager::~situation_manager(void)
+{
+  for(set<FSM_situation_if*,pointer_comparator>::const_iterator l_iter = m_set.begin();
+      m_set.end() != l_iter;
+      ++l_iter)
+    {
+      delete *l_iter;
+    }
+}
+
 FSM_situation_if* situation_manager::getUniqueSituation(FSM_situation_if *p_situation)
 {
   FSM_situation_if *l_result = p_situation;

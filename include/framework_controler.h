@@ -10,6 +10,7 @@ class framework_controler
 {
  public:
   framework_controler(framework_UI_if *p_framework_UI);
+  ~framework_controler(void);
   void loadLibrary(std::string p_name);
   void selectFsm(std::string p_name);
   void selectFsmUi(std::string p_name);

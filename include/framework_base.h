@@ -5,6 +5,7 @@
 #include "framework_algorithm_UI_if.h"
 #include "FSM_if.h"
 #include "FSM_UI_if.h"
+#include "quicky_exception.h"
 
 #include <vector>
 #include <string>
@@ -33,7 +34,7 @@ class framework_base
   /* Methods */
   /***********/
   void run(void);
-  void loadLibrary(string p_library_name);
+  void loadLibrary(string p_library_name) throw (quicky_exception::quicky_logic_exception);
 
   vector<string> getFsmList(void);
   vector<string> getFsmUiList(void);

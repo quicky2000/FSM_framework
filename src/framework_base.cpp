@@ -38,21 +38,25 @@ framework_base::~framework_base(void)
 {
 	if(m_framework_controler != NULL)
 	{
-		m_framework_controler = NULL;
+	  // DO not delete framework controler because it has been created outside
+	  m_framework_controler = NULL;
 	}
 	if(m_fsm != NULL)
 	{
-		m_fsm = NULL;
+	  delete m_fsm;
+	  m_fsm = NULL;
 	}
 	if(m_fsm_ui != NULL)
 	{
-		m_fsm_ui = NULL;
+	  delete m_fsm_ui;
+	  m_fsm_ui = NULL;
 	}
 	if(m_algorithm != NULL)
 	{
-		m_algorithm = NULL;
+	  delete m_algorithm;
+	  m_algorithm = NULL;
 	}
-//	closeAllLibrary();
+	closeAllLibrary();
 }
 
 //---------------------------------------------------------------------------
@@ -65,7 +69,7 @@ void framework_base::run(void)
 }
 
 //---------------------------------------------------------------------------
-void framework_base::loadLibrary(string p_library_name)
+void framework_base::loadLibrary(string p_library_name) throw (quicky_exception::quicky_logic_exception)
 {
 	// Check that library is not already open
 	if(!m_library_handles.count(p_library_name))
@@ -87,10 +91,10 @@ void framework_base::loadLibrary(string p_library_name)
 
 		if (l_library_handle == NULL)
 		{
-			stringstream l_stream;
-			l_stream << dlerror();
-			m_framework_controler->displayErrorMessage("Problem when opening library \""+p_library_name+"\": "+l_stream.str());
-			exit(1);
+		  
+		  stringstream l_stream;
+		  l_stream << "Problem when opening library \"" << p_library_name << "\": " << dlerror() ;
+		  throw quicky_exception::quicky_logic_exception(l_stream.str(),__LINE__,__FILE__);
 		}
 
 #ifndef _WIN32
@@ -105,11 +109,10 @@ void framework_base::loadLibrary(string p_library_name)
 		l_func = (void (*)(map<string, FSM_creator>*)) dlsym(l_library_handle, m_register_function_name.c_str());
 		if (l_func == NULL)
 		{
-			stringstream l_stream;
-			l_stream << dlerror();
-			m_framework_controler->displayErrorMessage("Unable to find symbol \""+m_register_function_name+"\" "+l_stream.str()); 
-			dlclose(l_library_handle);
-			exit(-1);
+		  stringstream l_stream;
+		  l_stream << "Unable to find symbol \"" << m_register_function_name << "\" " << dlerror();
+		  dlclose(l_library_handle);
+		  throw quicky_exception::quicky_logic_exception(l_stream.str(),__LINE__,__FILE__);
 		}
 	
 		// Exécution de la fonction "func"
@@ -122,19 +125,18 @@ void framework_base::loadLibrary(string p_library_name)
 		if (l_func_ui == NULL)
 		{
 			stringstream l_stream;
-			l_stream << dlerror();
-			m_framework_controler->displayErrorMessage("Unable to find symbol \"registerFsmUi\" "+l_stream.str()); 
+			l_stream << "Unable to find symbol \"registerFsmUi\" " << dlerror();
 			dlclose(l_library_handle);
-			exit(-1);
+			throw quicky_exception::quicky_logic_exception(l_stream.str(),__LINE__,__FILE__);			
 		}
 	
 		// Exécution de la fonction "func"
 		l_func_ui(&m_fsm_ui_factory);
 	}
 	else
-    {
-		m_framework_controler->displayWarningMessage("library \"" + p_library_name + "\" was already loaded");
-    }
+	  {
+	    m_framework_controler->displayWarningMessage("library \"" + p_library_name + "\" was already loaded");
+	  }
 }
 
 //---------------------------------------------------------------------------
@@ -355,10 +357,10 @@ void framework_base::closeAllLibrary(void)
 #endif
 
 	while(l_iter != l_iter_end)
-    {
-		dlclose(l_iter->second);      
-		l_iter++;
-    }
+	  {
+	    dlclose(l_iter->second);      
+	    ++l_iter;
+	  }
 }
 
 string framework_base::m_register_function_name = "Undefined";
