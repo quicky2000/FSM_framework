@@ -18,6 +18,7 @@ void algorithm_wide_first::run(void)
       bool l_continu = true;
 
       getFsm()->computeTransitions();
+      m_situation_manager.getUniqueSituation(getFsm()->getCurrentSituation());
 
       // Initialisinng situation vector
       m_situation_vector.push_back(getFsm()->getCurrentSituation());
@@ -28,6 +29,7 @@ void algorithm_wide_first::run(void)
 	  cout << "Vector size = " << m_situation_vector.size() << endl ;
 	  cout << "Map size = " << m_situation_tree.size() << endl ;
 	  l_previous_situation = *l_iter;
+	  cout << "Current situation : " <<endl ; 
 	  getFsmUi()->displaySituation(l_previous_situation) ;
 
 
@@ -52,6 +54,10 @@ void algorithm_wide_first::run(void)
 			  m_situation_vector.push_back(l_new_situation);
 			  m_situation_tree.insert( map<FSM_situation_if *,situation_tree_node>::value_type(l_new_situation,situation_tree_node(l_new_situation,l_previous_situation,l_transition_index)));
 			}
+		    }
+		  else
+		    {
+		      delete l_new_situation;
 		    }
 		  getFsm()->setCurrentSituation(l_previous_situation);
 		}
