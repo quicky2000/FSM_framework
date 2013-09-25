@@ -23,26 +23,35 @@ void algorithm_basic::run(void)
 	  getFsmUi()->displaySituation(l_previous_situation) ;
 	  if(!l_previous_situation->isFinal())
 	    {
-	  getFsm()->computeTransitions();
+	      getFsm()->computeTransitions();
 
-	  FSM_context_if *l_context = l_previous_situation->getCurrentContext();
-	  unsigned int l_nb_transition = l_context->getNbTransitions();
+	      FSM_context_if *l_context = l_previous_situation->getCurrentContext();
+	      unsigned int l_nb_transition = l_context->getNbTransitions();
 			
-	  cout << "Available transitions : " << endl ;
-	  for(unsigned int l_transition_index = 0;l_transition_index < l_nb_transition ; l_transition_index++)
-	    {
-	      cout << l_transition_index << " : " <<  l_context->getTransition(l_transition_index)->toString() << endl ;
-	    }
-	  unsigned int l_choosen_transition;
-	  cin >> l_choosen_transition;
+	      if(l_nb_transition)
+		{
+		  cout << "Available transitions : " << endl ;
+		  for(unsigned int l_transition_index = 0;l_transition_index < l_nb_transition ; l_transition_index++)
+		    {
+		      cout << l_transition_index << " : " <<  l_context->getTransition(l_transition_index)->toString() << endl ;
+		    }
+		  unsigned int l_choosen_transition;
+		  cin >> l_choosen_transition;
 
-	  getFsm()->selectTransition(l_choosen_transition);
+		  getFsm()->selectTransition(l_choosen_transition);
+		}
+	      else
+		{
+		  std::cout << "No more available transitions" << std::endl ;
+		  l_continu = false;
+		}
 	    }
 	  else
 	    {
 	      l_continu = false;
 	      cout << "Final situation reached !!!" << endl ;
 	    }
+	  delete l_previous_situation;
 	} while(l_continu);
     }
   else
