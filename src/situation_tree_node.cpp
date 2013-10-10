@@ -58,10 +58,13 @@ void situation_tree_node::setTransitionExplored(unsigned int p_transition_id)
 void situation_tree_node::initializeUnexploredTransition(void)
 {
   // Set all transition as unexplored
-  unsigned int l_nb_transition = m_situation->getCurrentContext()->getNbTransitions();
-  for(unsigned int l_transition_index = 0;l_transition_index < l_nb_transition ; l_transition_index++)
+  if( m_situation->getCurrentContext()->transitionsComputed())
     {
-      m_unexplored_transitions.insert(l_transition_index);
+      unsigned int l_nb_transition = m_situation->getCurrentContext()->getNbTransitions();
+      for(unsigned int l_transition_index = 0;l_transition_index < l_nb_transition ; l_transition_index++)
+	{
+	  m_unexplored_transitions.insert(l_transition_index);
+	}
     }
   
 }
