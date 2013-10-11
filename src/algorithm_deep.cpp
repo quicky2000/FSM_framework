@@ -56,9 +56,11 @@ void algorithm_deep::run(void)
 	      l_current_situation = l_unique_situation; 
 	      getFsm()->setCurrentSituation(l_unique_situation);
 	    }
+	 
 	  
+ 
 	  situation_tree_node & l_situation_tree_node = l_node_iter->second;
-	  const set<unsigned int> &l_unexplored_transitions = l_situation_tree_node.getUnexploredTransitions();
+	  const set<unsigned int> & l_unexplored_transitions = l_situation_tree_node.getUnexploredTransitions();
 			
           cout << "Situation valid = " << l_current_situation->isValid() << endl ;
           cout << "Non explored transitions : " << l_unexplored_transitions.size() <<endl ;
@@ -72,8 +74,11 @@ void algorithm_deep::run(void)
 	  cout << endl ;
  
 	  // Check if it can go deeply
-	  if(l_unexplored_transitions.size() > 0)
+	  if(l_unexplored_transitions.size() > 0 && !m_situation_stack.contains(l_current_situation))
 	    {
+	      // Store in stack
+	      m_situation_stack.push(l_current_situation);
+
 	      // Store current situation to record the relationship of future situation
 	      l_previous_transition = *(l_unexplored_transitions.begin());
 	      l_previous_situation = l_current_situation;
@@ -89,7 +94,20 @@ void algorithm_deep::run(void)
 	  // No more transition available so we go back for one step if possible
 	  else
 	    {
-	      
+	      if(m_situation_stack.size())
+		{
+		  FSM_situation_if * l_previous_situation = m_situation_stack.pop();
+		  std::cout << "restore previous situation" << std::endl ;
+
+		   // Getting back to previous situation
+		  getFsm()->setCurrentSituation(l_previous_situation);
+		}
+	      else
+		{
+		  // We are at the original situation
+		  l_continu = false ;
+		}
+#if 0
 	      const map<unsigned int,FSM_situation_if *> &l_predecessor_situations = l_situation_tree_node.getPredecessorSituations();
 	      // Check if there is a predecessor
 	      if(l_predecessor_situations.size())
@@ -112,6 +130,7 @@ void algorithm_deep::run(void)
 		  // We are at the original situation
 		  l_continu = false ;
 		}
+#endif
 	    }
 	} while(l_continu);
       cout << "End of algorithm" << endl ;
