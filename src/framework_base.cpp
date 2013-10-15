@@ -5,6 +5,7 @@
 #include "algorithm_deep_first.h"
 #include "algorithm_deep_first_weighted.h"
 #include "algorithm_wide_first.h"
+#include "algorithm_wide.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -33,6 +34,7 @@ framework_base::framework_base
 	algorithm_deep_first::registerAlgorithm(getAlgorithmFactory());
 	algorithm_deep_first_weighted::registerAlgorithm(getAlgorithmFactory());
 	algorithm_wide_first::registerAlgorithm(getAlgorithmFactory());
+	algorithm_wide::registerAlgorithm(getAlgorithmFactory());
 }
 
 //---------------------------------------------------------------------------
