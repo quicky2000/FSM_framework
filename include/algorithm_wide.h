@@ -7,21 +7,25 @@
 
 #include <vector>
 
-class algorithm_wide: public framework_algorithm_if
+namespace FSM_framework
 {
- public:
-  // Methods inherited from interface
-  void run(void);
-  std::string getString(void);
+  class algorithm_wide: public framework_algorithm_if
+  {
+  public:
+    // Methods inherited from interface
+    void run(void);
+    const std::string & get_string(void)const;
 	
-  static void registerAlgorithm(std::map<std::string,FSM_framework_algorithm_creator > &p_factory);
+    static void register_algorithm(std::map<std::string,FSM_framework_algorithm_creator_t > &p_factory);
 
- private:
-  std::map<FSM_situation_if *,situation_tree_node> m_situation_tree;
-  std::vector<FSM_situation_if*> m_situation_vector;
-  situation_manager m_situation_manager;
-};
+  private:
+    std::map<FSM_interfaces::FSM_situation_if *,situation_tree_node> m_situation_tree;
+    std::vector<FSM_interfaces::FSM_situation_if *> m_situation_vector;
+    situation_manager m_situation_manager;
+    static const std::string m_class_name;
+  };
 
-framework_algorithm_if* createAlgorithmWideFirst(void);
-
-#endif /* ALGORITHM_WIDE */
+  framework_algorithm_if & create_algorithm_wide(void);
+}
+#endif // ALGORITHM_WIDE
+//EOF

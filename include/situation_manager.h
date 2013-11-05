@@ -5,19 +5,24 @@
 
 #include <set>
 
-class FSM_situation_if;
-
-class situation_manager
+namespace FSM_interfaces
 {
- public:
-  situation_manager(void);
-  ~situation_manager(void);
-  FSM_situation_if* getUniqueSituation(FSM_situation_if *p_situation);
- private:
-  std::set<FSM_situation_if*,pointer_comparator > m_set;
-};
+  class FSM_situation_if;
+}
 
-#endif /* SITUATION_MANAGER_H */
+namespace FSM_framework
+{
+  class situation_manager
+  {
+  public:
+    situation_manager(void);
+    ~situation_manager(void);
+    FSM_interfaces::FSM_situation_if & get_unique_situation(FSM_interfaces::FSM_situation_if & p_situation);
+  private:
+    std::set<FSM_interfaces::FSM_situation_if*,pointer_comparator > m_set;
+  };
+}
 
+#endif // SITUATION_MANAGER_H 
 //EOF
 

@@ -4,16 +4,21 @@
 #include <string>
 #include <map>
 
-class framework_algorithm_UI_if
+namespace FSM_framework
 {
- public:
-  virtual std::string getType(void)=0;
+  class framework_algorithm_UI_if
+  {
+  public:
+    virtual const std::string & get_type(void)const=0;
+    
+    inline virtual ~framework_algorithm_UI_if(void){}
+  };
 
-virtual ~framework_algorithm_UI_if(void);
-};
+  typedef framework_algorithm_UI_if *(*FSM_framework_algorithm_UI_creator_t)(void);
 
-typedef framework_algorithm_UI_if *(*FSM_framework_algorithm_UI_creator)(void);
-
-void registerFrameworkAlgorithmUI(std::string p_algorithm_name,FSM_framework_algorithm_UI_creator p_creator,std::map<std::string,FSM_framework_algorithm_UI_creator> &p_factory);
-
-#endif /* FRAMEWORK_ALGORITHM_UI_IF_H */
+  void register_framework_algorithm_ui(const std::string & p_algorithm_name,
+                                       FSM_framework_algorithm_UI_creator_t p_creator,
+                                       std::map<std::string,FSM_framework_algorithm_UI_creator_t> &p_factory);
+}
+#endif // FRAMEWORK_ALGORITHM_UI_IF_H 
+//EOF

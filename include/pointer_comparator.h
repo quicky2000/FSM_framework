@@ -1,16 +1,23 @@
 #ifndef POINTER_COMPARATOR_H
 #define POINTER_COMPARATOR_H
 
-class FSM_situation_if;
-
-class pointer_comparator// :public std::binary_function<T*,T*,bool>
+namespace FSM_interfaces
 {
-  
- public:
-  bool operator()(const FSM_situation_if *p_op1,const FSM_situation_if *p_op2)const;
+  class FSM_situation_if;
+}
 
- private:
+namespace FSM_framework
+{
+  class pointer_comparator// :public std::binary_function<T*,T*,bool>
+  {
   
-};
+  public:
+    bool operator()(const FSM_interfaces::FSM_situation_if *p_op1,
+                    const FSM_interfaces::FSM_situation_if *p_op2)const;
 
-#endif /* POINTER_COMPARATOR_H */
+  private:
+  
+  };
+}
+#endif // POINTER_COMPARATOR_H 
+//EOF

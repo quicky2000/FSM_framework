@@ -1,7 +1,9 @@
 #include "framework_UI_if.h"
 
-framework_UI_if::~framework_UI_if(void)
+namespace FSM_framework
 {
+  framework_UI_if::~framework_UI_if(void)
+  {
+  }
 }
-
 //EOF

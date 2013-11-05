@@ -6,70 +6,71 @@
 #include <iostream>
 using namespace std;
 
-//-----------------------------------------------------------------------------
-framework_controler::framework_controler(framework_UI_if *p_framework_ui)
+namespace FSM_framework
 {
-  m_framework_ui= p_framework_ui;
-  m_framework = new framework_base(this);
-}
+  //-----------------------------------------------------------------------------
+  framework_controler::framework_controler(framework_UI_if *p_framework_ui)
+  {
+    m_framework_ui= p_framework_ui;
+    m_framework = new framework_base(this);
+  }
 
-//-----------------------------------------------------------------------------
-framework_controler::~framework_controler(void)
-{
-  delete m_framework;
-}
+  //-----------------------------------------------------------------------------
+  framework_controler::~framework_controler(void)
+  {
+    delete m_framework;
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::loadLibrary(string p_name)
-{
-  try
-    {
-      m_framework->loadLibrary(p_name);
-      vector<string> l_list = m_framework->getFsmList();
-      m_framework_ui->displayLoadedFsm(&l_list);
-      l_list = m_framework->getFsmUiList();
-      m_framework_ui->displayLoadedFsmUi(&l_list);
-      l_list = m_framework->getAlgorithmList();
-      m_framework_ui->displayLoadedAlgorithm(&l_list);
-    }
-  catch(std::exception & e)
-    {
-      displayErrorMessage(e.what());
-    }
-}
+  //-----------------------------------------------------------------------------
+  void framework_controler::load_library(const std::string & p_name)
+  {
+    try
+      {
+        m_framework->loadLibrary(p_name);
+        m_framework_ui->display_loaded_fsm(m_framework->get_fsm_list());
+        m_framework_ui->display_loaded_fsm_ui(m_framework->get_fsm_ui_list());
+        m_framework_ui->display_loaded_algorithm(m_framework->get_algorithm_list());
+      }
+    catch(std::exception & e)
+      {
+        display_error_message(e.what());
+      }
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::selectFsm(string p_name)
-{
-  m_framework->selectFsm(p_name);
-}
+  //-----------------------------------------------------------------------------
+  void framework_controler::select_fsm(const std::string & p_name)
+  {
+    m_framework->select_fsm(p_name);
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::selectFsmUi(string p_name)
-{
-  m_framework->selectFsmUi(p_name);
-}
+  //-----------------------------------------------------------------------------
+  void framework_controler::select_fsm_ui(const std::string & p_name)
+  {
+    m_framework->select_fsm_ui(p_name);
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::selectAlgorithm(string p_name)
-{
-  m_framework->selectAlgorithm(p_name);
-}
+  //-----------------------------------------------------------------------------
+  void framework_controler::select_algorithm(const std::string & p_name)
+  {
+    m_framework->select_algorithm(p_name);
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::run(void)
-{
-  m_framework->run();
-}
+  //-----------------------------------------------------------------------------
+  void framework_controler::run(void)
+  {
+    m_framework->run();
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::displayWarningMessage(string p_message)
-{
-  m_framework_ui->displayWarningMessage(p_message);
-}
+  //-----------------------------------------------------------------------------
+  void framework_controler::display_warning_message(const std::string & p_message)
+  {
+    m_framework_ui->display_warning_message(p_message);
+  }
 
-//-----------------------------------------------------------------------------
-void framework_controler::displayErrorMessage(string p_message)
-{
-  m_framework_ui->displayErrorMessage(p_message);
+  //-----------------------------------------------------------------------------
+  void framework_controler::display_error_message(const std::string & p_message)
+  {
+    m_framework_ui->display_error_message(p_message);
+  }
 }
+//EOF

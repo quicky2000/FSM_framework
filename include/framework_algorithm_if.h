@@ -4,34 +4,42 @@
 #include <string>
 #include <map>
 
-class FSM_if;
-class FSM_UI_if;
-
-class framework_algorithm_if
+namespace FSM_interfaces
 {
- public:
-  // Constructor and destructor
-  framework_algorithm_if(void);
-  virtual ~framework_algorithm_if(void);
-
-  // Methods to implement
-  virtual void run(void)=0;
-  virtual std::string getString(void)=0;
-
-  // Accessors
-  void setFsm(FSM_if *p_FSM);
-  void setFsmUi(FSM_UI_if *p_FSM_UI);
-  FSM_if* getFsm(void);
-  FSM_UI_if* getFsmUi(void);
-
- private:
-  FSM_if *m_fsm;
-  FSM_UI_if *m_fsm_ui;
+  class FSM_if;
+  class FSM_UI_if;
 }
-;
 
-typedef framework_algorithm_if *(*FSM_framework_algorithm_creator)(void);
+namespace FSM_framework
+{
+  class framework_algorithm_if
+  {
+  public:
+    // Constructor and destructor
+    framework_algorithm_if(void);
+    virtual ~framework_algorithm_if(void);
+    
+    // Methods to implement
+    virtual void run(void)=0;
+    virtual const std::string & get_string(void)const=0;
 
-void registerFrameworkAlgorithm(std::string p_algorithm_name,FSM_framework_algorithm_creator p_creator,std::map<std::string,FSM_framework_algorithm_creator> &p_factory);
+    // Accessors
+    void set_fsm(FSM_interfaces::FSM_if *p_FSM);
+    void set_fsm_ui(FSM_interfaces::FSM_UI_if *p_FSM_UI);
+    FSM_interfaces::FSM_if* get_fsm(void);
+    FSM_interfaces::FSM_UI_if* get_fsm_ui(void);
 
-#endif /* FRAMEWORK_ALGORITHM_IF_H */
+  private:
+    FSM_interfaces::FSM_if * m_fsm;
+    FSM_interfaces::FSM_UI_if *m_fsm_ui;
+  }
+  ;
+
+  typedef framework_algorithm_if & (*FSM_framework_algorithm_creator_t)(void);
+  
+  void register_framework_algorithm(const std::string & p_algorithm_name,
+				    FSM_framework_algorithm_creator_t,
+				    std::map<std::string,FSM_framework_algorithm_creator_t> &p_factory);
+}
+#endif // FRAMEWORK_ALGORITHM_IF_H 
+//EOF

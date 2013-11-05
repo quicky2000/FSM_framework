@@ -5,20 +5,23 @@
 #include <stack>
 #include <cassert>
 
-class FSM_situation_if;
+namespace FSM_interfaces
+{
+  class FSM_situation_if;
+}
 
 namespace FSM_framework
 {
   class situation_stack
   {
   public:
-    inline void push(FSM_situation_if * p_situation);
-    inline bool contains(FSM_situation_if * const p_situation)const;
-    inline FSM_situation_if * pop(void);
+    inline void push(FSM_interfaces::FSM_situation_if & p_situation);
+    inline bool contains(FSM_interfaces::FSM_situation_if & p_situation)const;
+    inline FSM_interfaces::FSM_situation_if & pop(void);
     inline unsigned int size(void)const;
   private:
-    std::set<FSM_situation_if*> m_sorted;
-    std::stack<FSM_situation_if*> m_in_order;
+    std::set< FSM_interfaces::FSM_situation_if * > m_sorted;
+    std::stack< FSM_interfaces::FSM_situation_if * > m_in_order;
   };
 
   //----------------------------------------------------------------------------
@@ -27,26 +30,27 @@ namespace FSM_framework
     return m_in_order.size();
   }
   //----------------------------------------------------------------------------
-  void situation_stack::push(FSM_situation_if * p_situation)
+  void situation_stack::push(FSM_interfaces::FSM_situation_if & p_situation)
   {
-    assert(m_sorted.end() == m_sorted.find(p_situation));
-    m_in_order.push(p_situation);
-    m_sorted.insert(p_situation);
+    assert(m_sorted.end() == m_sorted.find(&p_situation));
+    m_in_order.push(&p_situation);
+    m_sorted.insert(&p_situation);
   }
 
   //----------------------------------------------------------------------------
-  bool situation_stack::contains(FSM_situation_if * p_situation)const
+  bool situation_stack::contains(FSM_interfaces::FSM_situation_if & p_situation)const
   {
-    return m_sorted.end() != m_sorted.find(p_situation);
+    return m_sorted.end() != m_sorted.find(&p_situation);
   }
 
   //----------------------------------------------------------------------------
-  FSM_situation_if * situation_stack::pop(void)
+  FSM_interfaces::FSM_situation_if & situation_stack::pop(void)
   {
     assert(m_in_order.size());
-    FSM_situation_if * l_popped = m_in_order.top();
-    assert(m_sorted.end() != m_sorted.find(l_popped));
-    m_sorted.erase(l_popped);
+    FSM_interfaces::FSM_situation_if & l_popped = *(m_in_order.top());
+    std::set<FSM_interfaces::FSM_situation_if*>::iterator l_iter = m_sorted.find(&l_popped);
+    assert(m_sorted.end() != l_iter);
+    m_sorted.erase(l_iter);
     m_in_order.pop();
     return l_popped;
   }

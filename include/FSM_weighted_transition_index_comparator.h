@@ -3,17 +3,24 @@
 
 #include <functional>
 
-class FSM_weighted_transition_index_if;
-
-class FSM_weighted_transition_index_comparator:
-public std::binary_function<FSM_weighted_transition_index_if*,FSM_weighted_transition_index_if*,bool>
+namespace FSM_interfaces
 {
-  
- public:
-  bool operator()(FSM_weighted_transition_index_if* p_op1,FSM_weighted_transition_index_if* p_op2);
+  class FSM_weighted_transition_index_if;
+}
 
- private:
-  
-};
+namespace FSM_framework
+{
+  class FSM_weighted_transition_index_comparator:
+  public std::binary_function<FSM_interfaces::FSM_weighted_transition_index_if*,FSM_interfaces::FSM_weighted_transition_index_if*,bool>
+    {
+      
+    public:
+      bool operator()(FSM_interfaces::FSM_weighted_transition_index_if* p_op1,FSM_interfaces::FSM_weighted_transition_index_if* p_op2);
+      
+    private:
+      
+    };
+}
 
-#endif /* FSM_WEIGHTED_TRANSITION_INDEX_IF_H */
+#endif // FSM_WEIGHTED_TRANSITION_INDEX_IF_H
+//EOF
