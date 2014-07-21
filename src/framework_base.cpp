@@ -129,7 +129,7 @@ namespace FSM_framework
         // Searching FSM_creator creator function
         void (*l_func)(map<string, FSM_interfaces::FSM_creator_t>*);
 	
-        l_func = (void (*)(map<string, FSM_interfaces::FSM_creator_t>*)) dlsym(l_library_handle, m_register_function_name.c_str());
+        *(void **)(&l_func) = dlsym(l_library_handle, m_register_function_name.c_str());
         if (l_func == NULL)
           {
             stringstream l_stream;
@@ -144,7 +144,7 @@ namespace FSM_framework
         // Searchign FSM_UI_creator creator function
         void (*l_func_ui)(map<string, FSM_interfaces::FSM_UI_creator_t>*);
 	
-        l_func_ui = (void (*)(map<string, FSM_interfaces::FSM_UI_creator_t>*)) dlsym(l_library_handle, "register_fsm_ui");
+        *(void**)(&l_func_ui) =  dlsym(l_library_handle, "register_fsm_ui");
         if (l_func_ui == NULL)
           {
             stringstream l_stream;
