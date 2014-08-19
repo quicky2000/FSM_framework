@@ -26,6 +26,8 @@
 #include <assert.h>
 using namespace std;
 
+//#define ALGORITHM_VERBOSE
+
 namespace FSM_framework
 {
 
@@ -37,21 +39,25 @@ namespace FSM_framework
 	get_fsm()->configure();
 	FSM_interfaces::FSM_situation_if *l_previous_situation = NULL;
 	FSM_interfaces::FSM_types::transition_index_t l_previous_transition = 0;
-
+        uint64_t l_nb_situation_explored = 0;
 	bool l_continu = true;
 	do
 	  {
 	    FSM_interfaces::FSM_situation_if * l_current_situation = & get_fsm()->get_current_situation();
 	    get_fsm_ui()->display_situation(*l_current_situation) ;
+#ifdef ALGORITHM_VERBOSE
+		cout << "Current situation : \"" << l_current_situation->get_string_id() << "\"" <<endl ; 
+#endif // ALGORITHM_VERBOSE	      
 	      
 	    // Check if situation was already encoutered
 	    FSM_interfaces::FSM_situation_if * l_unique_situation = & m_situation_manager.get_unique_situation(*l_current_situation);
 	    map<FSM_interfaces::FSM_situation_if *,situation_tree_node>::iterator l_node_iter = m_situation_tree.find(l_unique_situation);
 	    if(l_node_iter == m_situation_tree.end())
 	      {
+#ifdef ALGORITHM_VERBOSE
+		std::cout << "New situation ! (never encountered)" << std::endl ;
 		cout << "Computing transitions" << endl ;
-		cout << "Current situation : \"" << l_current_situation->get_string_id() << "\"" <<endl ; 
-	      
+#endif // ALGORITHM_VERBOSE	      
 		get_fsm()->compute_transitions();
 	      
 		// Store current situation with its predecessor relation if it exists
@@ -63,7 +69,9 @@ namespace FSM_framework
 		  {
 		    l_node_iter = m_situation_tree.insert(map<FSM_interfaces::FSM_situation_if *,situation_tree_node>::value_type(l_unique_situation,situation_tree_node(*l_current_situation))).first;
 		  }
+#ifdef ALGORITHM_VERBOSE
 		cout << "Total of situation = " <<  m_situation_tree.size() << endl;
+#endif // ALGORITHM_VERBOSE	      
 	      }
 	    else if(l_current_situation != l_unique_situation)
 	      {
@@ -73,7 +81,8 @@ namespace FSM_framework
 	  
 	    situation_tree_node & l_situation_tree_node = l_node_iter->second;
 	    const set<FSM_interfaces::FSM_types::transition_index_t> & l_unexplored_transitions = l_situation_tree_node.get_unexplored_transitions();
-			
+            ++l_nb_situation_explored;
+#ifdef ALGORITHM_VERBOSE
 	    cout << "Situation valid = " << l_current_situation->is_valid() << endl ;
 	    cout << "Non explored transitions : " << l_unexplored_transitions.size() <<endl ;
 	    set<FSM_interfaces::FSM_types::transition_index_t>::const_iterator l_iter = l_unexplored_transitions.begin();
@@ -84,6 +93,7 @@ namespace FSM_framework
 		++l_iter;
 	      }
 	    cout << endl ;
+#endif // ALGORITHM_VERBOSE	      
  
 	    if(!l_current_situation->is_final())
 	      {
@@ -94,7 +104,9 @@ namespace FSM_framework
 		    l_previous_transition = *(l_unexplored_transitions.begin());
 		    l_previous_situation = l_current_situation;
 
+#ifdef ALGORITHM_VERBOSE
 		    cout << "Select transition number : " << l_previous_transition << endl ;
+#endif // ALGORITHM_VERBOSE	      
 
 		    // Compute the next situation
 		    get_fsm()->select_transition(l_previous_transition);
@@ -119,7 +131,9 @@ namespace FSM_framework
 			// Predecessor situation should be in situation tree !!!!
 			assert(l_previous_node_iter != m_situation_tree.end());
 
-			cout << "Restore previous situation " << & l_previous_node_iter->second.get_situation() <<  endl ;
+#ifdef ALGORITHM_VERBOSE
+			cout << "Restore previous situation" <<  endl ;
+#endif // ALGORITHM_VERBOSE	      
 			// Getting back to previous situation
 			get_fsm()->set_current_situation(l_previous_node_iter->second.get_situation());
 		      }
@@ -133,6 +147,8 @@ namespace FSM_framework
 	    else
 	      {
 		cout << "Final situation found !!!" << endl ;
+		cout << "Final situation : \"" << l_current_situation->get_string_id() << "\"" <<endl ; 
+                std::cout << "Situations explored : "  << l_nb_situation_explored << std::endl ;
 		l_continu = false;
 	      }
 	  } while(l_continu);
