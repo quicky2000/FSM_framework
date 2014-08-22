@@ -18,19 +18,14 @@
 #ifndef SITUATION_TREE_NODE_H
 #define SITUATION_TREE_NODE_H
 
-#include "FSM_types.h"
+#include "investigated_situation.h"
 #include <string>
 #include <map>
 #include <set>
 
-namespace FSM_interfaces
-{
-  class FSM_situation_if;
-}
-
 namespace FSM_framework
 {
-  class situation_tree_node
+  class situation_tree_node: public investigated_situation
   {
   public:
 
@@ -51,40 +46,11 @@ namespace FSM_framework
                         const FSM_interfaces::FSM_types::transition_index_t & p_predecessor_transition);
 
     /**
-       Method to access to situation contained in the node
-    */
-    FSM_interfaces::FSM_situation_if & get_situation(void)const;
-
-    /**
-       Method to get the list of unexplored transitions
-       @return list of unexplored transitions
-    */
-    const std::set<FSM_interfaces::FSM_types::transition_index_t> & get_unexplored_transitions(void)const;
-
-    /**
-       Method to indicate that a transition is explored
-       @param p_transition index of transition to mark explored
-    */
-    void set_transition_explored(const FSM_interfaces::FSM_types::transition_index_t & p_transition_id);
-
-    /**
-       Method to indicate that all transition are explored
-    */
-    void set_all_transition_explored(void);
-
-    /**
        Method to get the list of predecessors
     */
     const std::map<FSM_interfaces::FSM_types::transition_index_t,FSM_interfaces::FSM_situation_if &> & get_predecessor_situations(void)const;
 
   private:
-    /**
-       Method to initalize unexplored transition list
-    */
-    void initialize_unexplored_transition(void);
-
-    FSM_interfaces::FSM_situation_if & m_situation;
-    std::set<FSM_interfaces::FSM_types::transition_index_t> m_unexplored_transitions;
     std::map<FSM_interfaces::FSM_types::transition_index_t,FSM_interfaces::FSM_situation_if &> m_successor_situations;
     std::map<FSM_interfaces::FSM_types::transition_index_t,FSM_interfaces::FSM_situation_if &> m_predecessor_situations;
 
