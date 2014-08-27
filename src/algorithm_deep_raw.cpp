@@ -38,7 +38,7 @@ namespace FSM_framework
       {
 	get_fsm()->configure();
 
-        uint64_t l_nb_situation_explored = 0;
+        m_nb_situation_explored = 0;
 	bool l_continu = true;
         get_fsm()->compute_transitions();
         m_situation_stack.push(get_fsm()->get_current_situation());
@@ -84,9 +84,9 @@ namespace FSM_framework
                 FSM_interfaces::FSM_situation_if & l_new_situation = get_fsm()->get_current_situation();
                 if(!m_situation_stack.contains(l_new_situation))
                   {
-                    ++l_nb_situation_explored;
+                    ++m_nb_situation_explored;
 #ifdef ALGORITHM_VERBOSE
-                    cout << "Total of situation = " <<  l_nb_situation_explored << endl;
+                    cout << "Total of situation = " <<  m_nb_situation_explored << endl;
 #endif // ALGORITHM_VERBOSE	      
                     if(l_new_situation.is_valid())
                       {
@@ -96,12 +96,6 @@ namespace FSM_framework
                             cout << "Computing transitions" << endl ;
 #endif // ALGORITHM_VERBOSE	      
                             get_fsm()->compute_transitions();
-                          }
-                        else
-                          {
-                            cout << "Final situation found !!!" << endl ;
-                            cout << "Final situation : \"" << get_fsm()->get_current_situation().get_string_id() << "\"" <<endl ; 
-                            std::cout << "Situations explored : "  << l_nb_situation_explored << std::endl ;
                           }
                         // Store in stack
                         m_situation_stack.push(get_fsm()->get_current_situation());
@@ -123,7 +117,7 @@ namespace FSM_framework
 	      }
 	  } while(l_continu);
 	cout << "End of algorithm" << endl ;
-        std::cout << "Total situations explored : "  << l_nb_situation_explored << std::endl ;
+        std::cout << "Total situations explored : "  << m_nb_situation_explored << std::endl ;
       }
     else
       {

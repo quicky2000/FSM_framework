@@ -26,6 +26,8 @@ namespace FSM_framework
   class algorithm_deep_raw: public framework_algorithm_if
   {
   public:
+    inline algorithm_deep_raw(void);
+    inline const uint64_t & get_total_situations(void)const;
     // Methods inherited from interface
     void run(void);
     const std::string & get_string(void)const;
@@ -33,10 +35,23 @@ namespace FSM_framework
     static void register_algorithm(std::map<std::string,FSM_framework_algorithm_creator_t > &p_factory);
   private:
     FSM_framework::smart_situation_stack m_situation_stack;
+    uint64_t m_nb_situation_explored;
     static const std::string m_class_name;
   };
 
   framework_algorithm_if & create_algorithm_deep_raw(void);
+
+  //----------------------------------------------------------------------------
+  algorithm_deep_raw::algorithm_deep_raw(void):
+  m_nb_situation_explored(0)
+    {
+    }
+
+  //----------------------------------------------------------------------------
+  const uint64_t & algorithm_deep_raw::get_total_situations(void)const
+    {
+      return m_nb_situation_explored;
+    }
 }
 #endif // ALGORITHM_DEEP_RAW 
 //EOF
