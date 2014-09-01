@@ -74,6 +74,13 @@ namespace FSM_framework
   }
 
   //-----------------------------------------------------------------------------
+  const FSM_interfaces::FSM_if* const framework_algorithm_if::get_fsm(void)const
+  {
+    assert(m_fsm);
+    return m_fsm;
+  }
+
+  //-----------------------------------------------------------------------------
   FSM_interfaces::FSM_UI_if* framework_algorithm_if::get_fsm_ui(void)
   {
     assert(m_fsm_ui);

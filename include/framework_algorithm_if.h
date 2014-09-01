@@ -44,6 +44,7 @@ namespace FSM_framework
     void set_fsm(FSM_interfaces::FSM_if *p_FSM);
     void set_fsm_ui(FSM_interfaces::FSM_UI_if *p_FSM_UI);
     FSM_interfaces::FSM_if* get_fsm(void);
+    const FSM_interfaces::FSM_if * const get_fsm(void)const;
     FSM_interfaces::FSM_UI_if* get_fsm_ui(void);
 
   private:
