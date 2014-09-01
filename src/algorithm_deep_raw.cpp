@@ -30,6 +30,12 @@ using namespace std;
 
 namespace FSM_framework
 {
+  //----------------------------------------------------------------------------
+  void algorithm_deep_raw::print_status(void)const
+  {
+    std::cout << "Current situation : \"" << get_fsm()->get_current_situation().get_string_id() << "\"" << std::endl ; 
+    std::cout << "Total situations explored : "  << m_nb_situation_explored << std::endl ;
+  }
 
   //-----------------------------------------------------------------------------
   void algorithm_deep_raw::run(void)
@@ -42,11 +48,12 @@ namespace FSM_framework
 	bool l_continu = true;
         get_fsm()->compute_transitions();
         m_situation_stack.push(get_fsm()->get_current_situation());
+        get_fsm_ui()->display_situation(get_fsm()->get_current_situation());
 	do
 	  {
 	    FSM_interfaces::FSM_situation_if & l_current_situation = m_situation_stack.top().get_situation();
             get_fsm()->set_current_situation(l_current_situation);
-	    get_fsm_ui()->display_situation(l_current_situation) ;
+            //get_fsm_ui()->display_situation(l_current_situation) ;
 #ifdef ALGORITHM_VERBOSE
             cout << "Current situation : \"" << l_current_situation->get_string_id() << "\"" <<endl ; 
 #endif // ALGORITHM_VERBOSE	      
@@ -88,19 +95,24 @@ namespace FSM_framework
 #ifdef ALGORITHM_VERBOSE
                     cout << "Total of situation = " <<  m_nb_situation_explored << endl;
 #endif // ALGORITHM_VERBOSE	      
+                    if(!l_new_situation.is_final())
+                      {
+#ifdef ALGORITHM_VERBOSE
+                        cout << "Computing transitions" << endl ;
+#endif // ALGORITHM_VERBOSE	      
+                        get_fsm()->compute_transitions();
+                      }
+                    get_fsm_ui()->display_situation(l_new_situation) ;
                     if(l_new_situation.is_valid())
                       {
-                        if(!l_new_situation.is_final())
-                          {
-#ifdef ALGORITHM_VERBOSE
-                            cout << "Computing transitions" << endl ;
-#endif // ALGORITHM_VERBOSE	      
-                            get_fsm()->compute_transitions();
-                          }
                         // Store in stack
                         m_situation_stack.push(get_fsm()->get_current_situation());
-                        
                       }
+                    else
+                      {
+                        delete(&l_new_situation);
+                      }
+
                   }	  
  
 
@@ -115,7 +127,7 @@ namespace FSM_framework
 #endif // ALGORITHM_VERBOSE	      
                 l_continu = m_situation_stack.size();
 	      }
-	  } while(l_continu);
+	  } while(l_continu && !m_stop);
 	cout << "End of algorithm" << endl ;
         std::cout << "Total situations explored : "  << m_nb_situation_explored << std::endl ;
       }

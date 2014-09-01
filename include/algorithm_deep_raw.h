@@ -20,6 +20,7 @@
 
 #include "framework_algorithm_if.h"
 #include "smart_situation_stack.h"
+#include <iostream>
 
 namespace FSM_framework
 {
@@ -28,6 +29,8 @@ namespace FSM_framework
   public:
     inline algorithm_deep_raw(void);
     inline const uint64_t & get_total_situations(void)const;
+    inline void stop(void);
+    void print_status(void)const;
     // Methods inherited from interface
     void run(void);
     const std::string & get_string(void)const;
@@ -36,6 +39,7 @@ namespace FSM_framework
   private:
     FSM_framework::smart_situation_stack m_situation_stack;
     uint64_t m_nb_situation_explored;
+    bool m_stop;
     static const std::string m_class_name;
   };
 
@@ -43,7 +47,8 @@ namespace FSM_framework
 
   //----------------------------------------------------------------------------
   algorithm_deep_raw::algorithm_deep_raw(void):
-  m_nb_situation_explored(0)
+    m_nb_situation_explored(0),
+    m_stop(false)
     {
     }
 
@@ -52,6 +57,13 @@ namespace FSM_framework
     {
       return m_nb_situation_explored;
     }
+
+  //----------------------------------------------------------------------------
+  void algorithm_deep_raw::stop(void)
+  {
+    m_stop = true;
+  }
+
 }
 #endif // ALGORITHM_DEEP_RAW 
 //EOF
