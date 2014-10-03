@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <assert.h>
+#include <inttypes.h>
 using namespace std;
 
 //#define ALGORITHM_VERBOSE

@@ -21,6 +21,7 @@
 #include "framework_algorithm_if.h"
 #include "smart_situation_stack.h"
 #include <iostream>
+#include <inttypes.h>
 
 namespace FSM_framework
 {
