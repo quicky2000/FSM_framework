@@ -50,15 +50,22 @@ namespace FSM_framework
 			
 		if(l_nb_transition)
 		  {
-		    cout << "Available transitions : " << endl ;
-		    for(FSM_interfaces::FSM_types::transition_index_t l_transition_index = 0;l_transition_index < l_nb_transition ; l_transition_index++)
+		    bool l_done = false;
+		    do
 		      {
-			cout << l_transition_index << " : " <<  l_context->get_transition(l_transition_index).to_string() << endl ;
-		      }
-		    FSM_interfaces::FSM_types::transition_index_t l_choosen_transition;
-		    cin >> l_choosen_transition;
-
-		    get_fsm()->select_transition(l_choosen_transition);
+			cout << "Available transitions : " << endl ;
+			for(FSM_interfaces::FSM_types::transition_index_t l_transition_index = 0;l_transition_index < l_nb_transition ; l_transition_index++)
+			  {
+			    cout << l_transition_index << " : " <<  l_context->get_transition(l_transition_index).to_string() << endl ;
+			  }
+			FSM_interfaces::FSM_types::transition_index_t l_choosen_transition;
+			cin >> l_choosen_transition;
+			if(l_choosen_transition < l_nb_transition)
+			  {
+			    get_fsm()->select_transition(l_choosen_transition);
+			    l_done = true ;
+			  }
+		      }while(!l_done);
 		  }
 		else
 		  {
