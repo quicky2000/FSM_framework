@@ -34,18 +34,17 @@ namespace FSM_framework
     if(get_fsm() != NULL)
       {
 	get_fsm()->configure();
-	FSM_interfaces::FSM_situation_if *l_previous_situation = NULL;
+	FSM_interfaces::FSM_situation_if & l_current_situation =  get_fsm()->get_current_situation();
 	bool l_continu = true;
 	do
 	  {
 
-	    l_previous_situation = & get_fsm()->get_current_situation();
-	    get_fsm_ui()->display_situation(*l_previous_situation) ;
-	    if(!l_previous_situation->is_final())
+	    get_fsm_ui()->display_situation(l_current_situation) ;
+	    if(!l_current_situation.is_final())
 	      {
 		get_fsm()->compute_transitions();
 
-		FSM_interfaces::FSM_context_if *l_context = l_previous_situation->get_current_context();
+		FSM_interfaces::FSM_context_if *l_context = l_current_situation.get_current_context();
 		unsigned int l_nb_transition = l_context->get_nb_transitions();
 			
 		if(l_nb_transition)
@@ -62,7 +61,8 @@ namespace FSM_framework
 			cin >> l_choosen_transition;
 			if(l_choosen_transition < l_nb_transition)
 			  {
-			    get_fsm()->select_transition(l_choosen_transition);
+			    get_fsm()->apply_transition(l_choosen_transition);
+			    l_current_situation.get_current_context()->remove_transitions();
 			    l_done = true ;
 			  }
 		      }while(!l_done);
@@ -78,8 +78,8 @@ namespace FSM_framework
 		l_continu = false;
 		cout << "Final situation reached !!!" << endl ;
 	      }
-	    delete l_previous_situation;
 	  } while(l_continu);
+	delete & l_current_situation;
       }
     else
       {
