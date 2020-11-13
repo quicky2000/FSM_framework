@@ -92,7 +92,7 @@ namespace FSM_framework
   }
 
   //---------------------------------------------------------------------------
-  void framework_base::loadLibrary(string p_library_name) throw (quicky_exception::quicky_logic_exception)
+  void framework_base::loadLibrary(string p_library_name)
   {
     // Check that library is not already open
     if(!m_library_handles.count(p_library_name))

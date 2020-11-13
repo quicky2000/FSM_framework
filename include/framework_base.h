@@ -53,7 +53,7 @@ namespace FSM_framework
     /* Methods */
     /***********/
     void run(void);
-    void loadLibrary(std::string p_library_name) throw (quicky_exception::quicky_logic_exception);
+    void loadLibrary(std::string p_library_name);
 
     std::vector<std::string> get_fsm_list(void);
     std::vector<std::string> get_fsm_ui_list(void);
