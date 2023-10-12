@@ -90,7 +90,7 @@ else()
     add_executable(${PROJECT_NAME} ${MY_SOURCE_FILES} ${DEPENDANCY_OBJECTS} src/main_${PROJECT_NAME}.cpp)
     target_compile_definitions(${PROJECT_NAME} PRIVATE -D$<UPPER_CASE:${PROJECT_NAME}>_SELF_TEST)
     target_link_libraries(${PROJECT_NAME} ${LINKED_LIBRARIES})
-    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -ansi -pedantic -g -O0)
+    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -pedantic -g -O0)
     target_link_libraries(${PROJECT_NAME})
 endif()
 
